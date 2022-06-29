@@ -1,0 +1,24 @@
+.upgradeWindow, .completeLevel{
+    border-radius: 5px ;
+    display: none;
+}
+
+canvas{
+    pointer-events: none;
+}
+
+button{
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+    border: none;
+
+}
+
+button:hover{
+    background-color: #ccc;
+}
+
+.gameOver{
+    display: none;
+}

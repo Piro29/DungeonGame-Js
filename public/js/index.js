@@ -1,70 +1,42 @@
-﻿const townCanvas = document.getElementById("town")
-const townContext = townCanvas.getContext("2d")
+﻿
 
-const dungeonCanvas = document.getElementById("dungeon")
-const dungeonContext = dungeonCanvas.getContext("2d")
+upgradeWindow.style.width = `${upgradeWindowWidth}px`
+upgradeWindow.style.height = `${upgradeWindowHeight}px`
+upgradeWindow.style.left = `${x}px`
+upgradeWindow.style.top = `${y}px`
+upgradeWindow.style.backgroundColor = `brown`
+upgradeWindow.style.position = `absolute`
 
-const width = 1024
-const height = 576
+startWindow.style.width = `${upgradeWindowWidth}px`
+startWindow.style.height = `${upgradeWindowHeight}px`
+startWindow.style.left = `${x}px`
+startWindow.style.top = `${y}px`
+startWindow.style.backgroundColor = `brown`
+startWindow.style.position = `absolute`
 
-dungeonCanvas.width = width
-dungeonCanvas.height = height
-dungeonCanvas.style.display = "none"
+completeLevel.style.width = `${upgradeWindowWidth}px`
+completeLevel.style.height = `${upgradeWindowHeight}px`
+completeLevel.style.left = `${x}px`
+completeLevel.style.top = `${y}px`
+completeLevel.style.backgroundColor = `brown`
+completeLevel.style.position = `absolute`
+startWindow.style.position = `absolute`
+
+gameOverWindow.style.width = `${upgradeWindowWidth}px`
+gameOverWindow.style.height = `${upgradeWindowHeight}px`
+gameOverWindow.style.left = `${x}px`
+gameOverWindow.style.top = `${y}px`
+gameOverWindow.style.backgroundColor = `brown`
+gameOverWindow.style.position = `absolute`
 
 
-townCanvas.width = width
-townCanvas.height = height
 
-
-const townImage = new Image()
-townImage.src = "img/Town.png"
-
-const foreImage = new Image()
-foreImage.src = "img/foreground.png"
-
-const playerImage = new Image()
-playerImage.src = "img/character/character_0.png"
-
-const dungeonImage = new Image()
-dungeonImage.src = "img/fixeddungeon.png"
-
-const enemyImage = new Image()
-enemyImage.src = "img/Slime2.png"
-
-const offset = {
-    x: -725,
-    y: -650
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
-const numberOfEnemy = 5
-
-
-let frames = 0
-let direction = "down"
-
-const keys = {
-    w: {
-        pressed: false
-    },
-    a: {
-        pressed: false
-    },
-    s: {
-        pressed: false
-    },
-    d: {
-        pressed: false
-    },
-    space: {
-        pressed: false
-    }
-}
-
-const dungeon = {
-    started: false
-}
-
-const boundaries = []
 
 collisionMap.forEach((row, index) => {
     row.forEach((symbol, rowIndex) => {
@@ -78,7 +50,6 @@ collisionMap.forEach((row, index) => {
     })
 })
 
-const wallBoundaries = []
 
 wallCollisionMap.forEach((row, index) => {
     row.forEach((symbol, rowIndex) => {
@@ -92,7 +63,6 @@ wallCollisionMap.forEach((row, index) => {
     })
 })
 
-const battleZone = []
 
 battleZoneMap.forEach((row, index) => {
     row.forEach((symbol, rowIndex) => {
@@ -106,162 +76,31 @@ battleZoneMap.forEach((row, index) => {
     })
 })
 
-const town = new Sprite({
-    position: {
-        x: offset.x,
-        y: offset.y
-    },
-    image: townImage,
-    context: townContext
+
+upgradeZoneMap.forEach((row, index) => {
+    row.forEach((symbol, rowIndex) => {
+        if (symbol === 1025)
+            upgradeZone.push((new Boundary({
+                position: {
+                    x: rowIndex * Boundary.width + offset.x,
+                    y: index * Boundary.height + offset.y
+                }
+            })))
+    })
 })
 
-const dungeon_map = new Sprite({
-    position: {
-        x: offset.x,
-        y: offset.y
-    },
-    image: dungeonImage,
-    context: dungeonContext
-})
+let stats = new Stats()
 
-
-const foreground = {
-    position: {
-        x: -293,
-        y: -506
-    },
-    draw: function () {
-        townContext.drawImage(foreImage, this.position.x, this.position.y)
-    }
-
-}
-const stats = {
-    maxWidth: 100,
-    energy: 60,
-    attack: 10,
-    x: 20,
-    y: 20,
-    health: 100,
-    height: 30,
-    points: 0,
-
-
-    draw: function (context) {
-        context.lineWidth = 5
-        context.strokeStyle = "#333"
-        context.fillStyle = "red"
-        context.fillRect(this.x, this.y, this.health, this.height)
-        context.strokeRect(this.x, this.y, this.maxWidth, this.height)
-        context.font = "20px serif"
-        context.fillStyle = "black"
-        context.fillText(`Points : ${this.points}`, this.x, this.y + 50)
-
-    }
-}
-const enemy = {
-    animation: [
-        {sX: 0, sY: 3, sH: 12},
-        {sX: 0, sY: 16, sH: 15},
-        {sX: 0, sY: 33, sH: 14},
-        {sX: 0, sY: 53, sH: 10},
-    ],
-    sW: 16,
-    w: 30,
-    h: 30,
-
-    position: {
-        x: townCanvas.width / 2,
-        y: townCanvas.height / 2,
-    },
-    frame: 0,
-    health: 100,
-    attack_damage: 5,
-    changedY: 0,
-    attacking: false,
-    draw: function (i) {
-        let ene = this.animation[this.frame]
-        this.changedY = this.position.y + i * 50
-        dungeonContext.drawImage(enemyImage, ene.sX, ene.sY, this.sW, ene.sH, this.position.x, this.changedY, this.w, this.h)
-        this.frame += frames % 80 === 0 ? 1 : 0
-        if (this.frame === 2) this.frame = 0
-    },
-}
+let slimeEnemy = new Slime({ image: enemyImage, position: slimePosition })
+let snakeEnemy = new Snake({ image: snakeImage, position: snakePosition })
 
 
 const movables = [
-    town, ...boundaries, foreground, ...battleZone, dungeon_map, ...wallBoundaries, enemy
+    town, ...boundaries, foreground, ...battleZone, dungeon_map, ...wallBoundaries, slimeEnemy, snakeEnemy, ...upgradeZone
 ]
 
-const player = {
 
-    playerUp: [
-        {sX: 8, sY: 100},
-        {sX: 72, sY: 100},
-        {sX: 40, sY: 99},
-    ],
-    playerDown: [
-        {sX: 9, sY: 4},
-        {sX: 73, sY: 4},
-        {sX: 41, sY: 3},
-    ],
-    playerRight: [
-        {sX: 8, sY: 67},
-        {sX: 72, sY: 67},
-        {sX: 40, sY: 67},
-    ],
-    playerLeft: [
-        {sX: 10, sY: 35},
-        {sX: 74, sY: 35},
-        {sX: 42, sY: 35},
-    ],
-    attackUp: [
-        {sX: 8, sY: 100},
-        {sX: 133, sY: 100},
-        {sX: 40, sY: 99},
-    ],
-    attackDown: [
-        {sX: 9, sY: 4},
-        {sX: 134, sY: 4},
-        {sX: 41, sY: 3},
-    ],
-    attackRight: [
-        {sX: 8, sY: 67},
-        {sX: 136, sY: 67},
-        {sX: 40, sY: 67},
-    ],
-    attackLeft: [
-        {sX: 10, sY: 35},
-        {sX: 133, sY: 35},
-        {sX: 42, sY: 35},
-    ],
-    sX: 41,
-    sY: 3,
-    sW: 15,
-    sH: 18,
-    x: townCanvas.width / 2,
-    y: townCanvas.height / 2,
-    w: 38,
-    h: 45,
-    moving: false,
-    attack: false,
-
-    frame: 0,
-    p: [],
-    draw: function (context) {
-        if (direction === "up" && this.moving) this.p = this.playerUp[this.frame]
-        if (direction === "down" && this.moving) this.p = this.playerDown[this.frame]
-        if (direction === "right" && this.moving) this.p = this.playerRight[this.frame]
-        if (direction === "left" && this.moving) this.p = this.playerLeft[this.frame]
-
-        context.drawImage(playerImage, this.p.sX, this.p.sY, this.sW, this.sH, this.x, this.y, this.w, this.h)
-
-        if (!this.moving && !this.attack) return
-        this.frame += frames % 40 === 0 ? 1 : 0
-        if (this.frame === 2) this.frame = 0
-
-
-    },
-}
+const player = new Player()
 
 
 let lastKey = ""
@@ -322,10 +161,10 @@ function isCollided(rect1, rect2) {
 
 function isEnemyNear(rect1, rect2) {
     return (
-        rect1.x + rect1.w >= rect2.position.x - 16 &&
-        rect1.x <= rect2.position.x + rect2.w + 16 &&
-        rect1.y <= rect2.changedY + rect2.h + 16 &&
-        rect1.y + rect1.h >= rect2.changedY - 16
+        rect1.x + rect1.w >= rect2.position.x - 25 &&
+        rect1.x <= rect2.position.x + rect2.w + 25 &&
+        rect1.y <= rect2.position.y + rect2.h + 25 &&
+        rect1.y + rect1.h >= rect2.position.y - 25
     )
 }
 
@@ -344,6 +183,7 @@ function keyPressed() {
     // player.frame = 2
     player.moving = false
     player.attack = false
+    upgrade.started = false
     if (keys.w.pressed && lastKey === "w") {
         player.moving = true
         player.p = player.playerUp[player.frame]
@@ -378,18 +218,30 @@ function keyPressed() {
             }
 
         }
-        if (!dungeon.started)
+        if (!dungeon.started) {
 
             for (let i = 0; i < battleZone.length; i++) {
                 const zone = battleZone[i]
                 if (isCollided(player, zone)) {
-                    console.log("battle zone")
                     dungeon.started = true
                     break
                 }
             }
+            for (let i = 0; i < upgradeZone.length; i++) {
+                const zone = upgradeZone[i]
+                if (isCollided(player, zone)) {
+                    upgrade.started = true
+                    upgrade_function()
+                    break
+                }
+            }
+            if (!upgrade.started) {
+                upgradeWindow.style.display = "none"
+            }
+
+
+        }
         if (moving) {
-            // player.draw("up")
             movables.forEach((movable) => {
                 movable.position.y += 3
             })
@@ -397,10 +249,9 @@ function keyPressed() {
 
     } else if (keys.a.pressed && lastKey === "a") {
         player.moving = true
-        player.attack = true
         player.p = player.playerLeft[player.frame]
         direction = "left"
-        if (!dungeon.started)
+        if (!dungeon.started) {
 
             for (let i = 0; i < boundaries.length; i++) {
                 const boundary = boundaries[i]
@@ -414,6 +265,10 @@ function keyPressed() {
                     break
                 }
             }
+            if (!upgrade.started) {
+                upgradeWindow.style.display = "none"
+            }
+        }
         if (dungeon.started) {
             for (let i = 0; i < wallBoundaries.length; i++) {
                 const boundary = wallBoundaries[i]
@@ -429,7 +284,6 @@ function keyPressed() {
             }
         }
         if (moving) {
-            // player.draw("left")
             movables.forEach(movable => {
                 movable.position.x += 3
             })
@@ -439,7 +293,7 @@ function keyPressed() {
         player.moving = true
         player.p = player.playerDown[player.frame]
         direction = "down"
-        if (!dungeon.started)
+        if (!dungeon.started) {
 
             for (let i = 0; i < boundaries.length; i++) {
                 const boundary = boundaries[i]
@@ -453,6 +307,10 @@ function keyPressed() {
                     break
                 }
             }
+            if (!upgrade.started) {
+                upgradeWindow.style.display = "none"
+            }
+        }
         if (dungeon.started) {
 
             for (let i = 0; i < wallBoundaries.length; i++) {
@@ -470,7 +328,6 @@ function keyPressed() {
 
         }
         if (moving) {
-            // player.draw("down")
             movables.forEach(movable => {
                 movable.position.y -= 3
             })
@@ -480,7 +337,7 @@ function keyPressed() {
         player.moving = true
         player.p = player.playerRight[player.frame]
         direction = "right"
-        if (!dungeon.started)
+        if (!dungeon.started) {
 
             for (let i = 0; i < boundaries.length; i++) {
                 const boundary = boundaries[i]
@@ -494,6 +351,10 @@ function keyPressed() {
                     break
                 }
             }
+            if (!upgrade.started) {
+                upgradeWindow.style.display = "none"
+            }
+        }
         if (dungeon.started) {
 
             for (let i = 0; i < wallBoundaries.length; i++) {
@@ -515,6 +376,21 @@ function keyPressed() {
             })
         }
     } else if (keys.space.pressed && lastKey === "space") {
+
+        if (isEnemyNear(player, slimeEnemy)) {
+            if (frames % 40 === 0) {
+                slimeEnemy.health -= stats.attack
+            }
+
+
+        }
+        if (isEnemyNear(player, snakeEnemy)) {
+            if (frames % 40 === 0) {
+                snakeEnemy.health -= stats.attack
+            }
+
+
+        }
         player.attack = true
         if (direction === "up") {
             player.p = player.attackUp[player.frame]
@@ -522,6 +398,8 @@ function keyPressed() {
             player.sH = 18
             player.w = 50
             player.h = 50
+
+
         }
         if (direction === "down") {
             player.p = player.attackDown[player.frame]
@@ -548,53 +426,146 @@ function keyPressed() {
     }
 }
 
+enemies.push(slimeEnemy)
+enemies.push(snakeEnemy)
 
 function dungeon_function() {
+    dungeon.started = true
+
     townCanvas.style.display = "none"
     dungeonCanvas.style.display = "inline"
     dungeon_map.draw()
-    for (let i = 0; i < numberOfEnemy; i++) {
-        enemy.draw(i)
-        enemy.attacking = false
-        if (isEnemyNear(player, enemy)) {
-            console.log("attack")
-            enemy.attacking = true
-            if (enemy.attacking) {
-                if (frames % 80 === 0)
-                    stats.health -= 1
-            }
-        }
-
-        //follow player
-        if(enemy.position.x > player.x + 16){
-            enemy.position.x--
-        }
-        if(enemy.position.x < player.x - 16){
-            enemy.position.x++
-        }
-        if(enemy.changedY > player.y + 16){
-            enemy.position.y--
-        }
-        if(enemy.changedY < player.y - 16){
-            enemy.position.y++
-        }
+    enemies = enemies.filter(ene => !ene.dead)
+    if (enemies.length === 0) {
+        completeLevel.style.display = `grid`
 
     }
+    enemies.forEach(ene => {
+        ene.draw(dungeonContext)
+    })
+
+    slimeEnemy.attacking = false
+    snakeEnemy.attacking = false
+
+    if (!slimeEnemy.dead) {
+        if (isEnemyNear(player, slimeEnemy)) {
+            slimeEnemy.attacking = true
+        }
+        if (slimeEnemy.attacking) {
+            if (frames % 80 === 0)
+                stats.health -= slimeEnemy.attack_damage
+        }
+    }
+
+    if (!snakeEnemy.dead) {
+        if (isEnemyNear(player, snakeEnemy)) {
+            snakeEnemy.attacking = true
+        }
+        if (snakeEnemy.attacking) {
+            if (frames % 80 === 0)
+                stats.health -= snakeEnemy.attack_damage
+        }
+    }
+
+
+
+
     player.draw(dungeonContext)
-    // boundaries.forEach(boundary => {
-    //     boundary.position.x = 0
-    //     boundary.position.y = 0
-    // })
-    // battleZone.forEach(boundary => {
-    //     boundary.position.x = 0
-    //     boundary.position.y = 0
-    // })
     wallBoundaries.forEach(boundary => {
         boundary.draw()
     })
     stats.draw(dungeonContext)
 
+    if (stats.health <= 0) {
+        gameOverWindow.style.display = "block"
+        pause = true
+    }
+
+    if (!slimeEnemy.dead) {
+
+        if (slimeEnemy.health <= 0) {
+            stats.points++
+            slimeEnemy.attacking = false
+            slimeEnemy.dead = true
+        }
+    }
+
+    console.log("slime" + isEnemyNear(player, slimeEnemy));
+    console.log(isEnemyNear(player, snakeEnemy));
+
+    if (!snakeEnemy.dead) {
+        if (snakeEnemy.health <= 0) {
+            stats.points++
+            snakeEnemy.attacking = false
+            snakeEnemy.dead = true
+        }
+    }
 }
+
+
+function upgrade_function() {
+    upgradeWindow.style.display = `grid`
+}
+
+goHomeButton.addEventListener("click", () => {
+    dungeon.started = false
+    townCanvas.style.display = "inline"
+    dungeonCanvas.style.display = "none"
+    completeLevel.style.display = `none`
+    slimeEnemy.health = slimeEnemy.maxHealth = 50 + (level * 5)
+    snakeEnemy.health = snakeEnemy.maxHealth = 50 + (level * 5)
+    level++
+    slimeEnemy.attack_damage = 5 + (level * 2)
+    snakeEnemy.attack_damage = 5 + (level * 2)
+    slimeEnemy.dead = false
+    snakeEnemy.dead = false
+    enemies.push(slimeEnemy)
+    enemies.push(snakeEnemy)
+})
+
+nextLevelButton.addEventListener("click", () => {
+    completeLevel.style.display = `none`
+    slimeEnemy.dead = false
+    snakeEnemy.dead = false
+    enemies.push(slimeEnemy)
+    enemies.push(snakeEnemy)
+    slimeEnemy.health = slimeEnemy.maxHealth = 50 + (level * 2)
+    snakeEnemy.health = snakeEnemy.maxHealth = 50 + (level * 2)
+    slimeEnemy.attack_damage = 5 + (level * 2)
+    snakeEnemy.attack_damage = 5 + (level * 2)
+    level++
+})
+
+upgradeDamageButton.addEventListener("click", () => {
+    status.style.color = "white"
+    status.style.textAlign = "center"
+    if (stats.points < 5) status.innerHTML = "Not Enought Points"
+    else {
+        stats.attack += 5
+        stats.points -= 5
+        status.innerHTML = "Upgraded"
+    }
+
+    setTimeout(() => {
+        status.innerHTML = ""
+    }, 1000)
+
+})
+upgradeHealthButton.addEventListener("click", () => {
+})
+
+restartButton.addEventListener("click", () => {
+    dungeon.started = false
+    stats.health = 100
+    pause = false
+    loop()
+    gameOverWindow.style.display = "none"
+    townCanvas.style.display = "inline"
+    dungeonCanvas.style.display = "none"
+    level = 1
+    stats.points = 0
+    stats.attack = 10
+})
 
 function draw() {
 
@@ -612,23 +583,27 @@ function draw() {
         player.draw(townContext)
         foreground.draw()
         stats.draw(townContext)
+        if (stats.health !== 100) stats.health++
 
     }
-
-
 }
 
 
 function update() {
-
     keyPressed()
 }
 
 function loop() {
-    update()
-    draw()
-    frames++
-    requestAnimationFrame(loop)
+    if (!pause) {
+
+        update()
+        draw()
+        frames = requestAnimationFrame(loop)
+    }
+
 }
 
-loop()
+startButton.addEventListener("click", () => {
+    loop()
+    startWindow.style.display = "none"
+})
