@@ -32,7 +32,7 @@ function getHighestLevel(){
     })
     .catch((err) =>{
         alert("Could Not fetch highest Level")
-        
+        highestLevel = 10
     })
 }
 

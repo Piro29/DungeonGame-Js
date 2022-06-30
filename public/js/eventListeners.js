@@ -47,6 +47,7 @@ goHomeButton.addEventListener("click", () => {
     enemies.push(slimeEnemy)
     enemies.push(snakeEnemy)
     enemies.push(axolotEnemy)
+    enemies.push(bambooEnemy)
     dungeon.started = false
     townCanvas.style.display = "inline"
     dungeonCanvas.style.display = "none"
@@ -67,6 +68,8 @@ nextLevelButton.addEventListener("click", () => {
     enemies.push(slimeEnemy)
     enemies.push(snakeEnemy)
     enemies.push(axolotEnemy)
+    enemies.push(bambooEnemy)
+
     completeLevel.style.display = `none`
 
     slimeEnemy.position = {
