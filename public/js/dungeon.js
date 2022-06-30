@@ -14,7 +14,6 @@ function dungeon_function() {
     enemies = enemies.filter(ene => !ene.dead)
     if (enemies.length === 0) {
         completeLevel.style.display = `grid`
-        // setHighestLevel()
     }
     enemies.forEach(ene => {
         ene.draw(dungeonContext)

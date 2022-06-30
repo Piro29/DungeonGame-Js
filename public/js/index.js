@@ -5,10 +5,11 @@ let stats = new Stats()
 let slimeEnemy = new Slime({ image: enemyImage, position: slimePosition })
 let snakeEnemy = new Snake({ image: snakeImage, position: snakePosition })
 let axolotEnemy = new Axolot({ image: axolotImage, position: axolotPosition })
+let bambooEnemy = new Bamboo({ image: bambooImage, position: bambooPosition })
 
 //move map when player moves
 const movables = [
-    town, ...boundaries, foreground, ...battleZone, dungeon_map, ...wallBoundaries, slimeEnemy, snakeEnemy, ...upgradeZone,axolotEnemy
+    town, ...boundaries, foreground, ...battleZone, dungeon_map, ...wallBoundaries, slimeEnemy, snakeEnemy, ...upgradeZone, axolotEnemy, bambooEnemy
 ]
 
 //create player
@@ -20,6 +21,7 @@ let lastKey = ""
 enemies.push(slimeEnemy)
 enemies.push(snakeEnemy)
 enemies.push(axolotEnemy)
+enemies.push(bambooEnemy)
 
 
 
@@ -69,7 +71,7 @@ function loop() {
 startButton.addEventListener("click", () => {
     loop()
     startWindow.style.display = "none"
-    
+
     getHighestLevel()
     setHighestLevel()
 })

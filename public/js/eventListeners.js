@@ -114,6 +114,7 @@ upgradeHealthButton.addEventListener("click", () => {
     else {
         stats.maxWidth += 50
         stats.health += 50
+        stats.points -= 5
         status.innerHTML = "Health Upgraded"
     }
 

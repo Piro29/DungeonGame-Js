@@ -66,16 +66,15 @@ class Slime {
         this.changedY = this.position.y
         if(this.hit) {
             ctx.globalAlpha = 0.2
-            console.log('testing');
         }
         dungeonContext.drawImage(this.image, ene.sX, ene.sY, this.sW, ene.sH, this.position.x, this.changedY, this.w, this.h)
 
-        this.drawHealth(ctx);
-        this.update();
+        this.drawHealth(ctx)
+        this.update()
         if(this.hit) {
-            ctx.globalAlpha = 1;
+            ctx.globalAlpha = 1
             setTimeout(() => {
-                this.hit = false;
+                this.hit = false
             }, 100)
         }
     }
@@ -108,6 +107,24 @@ class Axolot extends Slime {
         this.sW = 14
         this.position = position
         this.speed = 3
+        this.animation = [
+            {sX: 1, sY: 2, sH: 13},
+            {sX: 1, sY: 19, sH: 12},
+            {sX: 1, sY: 34, sH: 13},
+            {sX: 1, sY: 51, sH: 12},
+        ]
+
+    }
+
+
+}
+
+class Bamboo extends Slime {
+    constructor({position, image}) {
+        super({position, image})
+        this.sW = 14
+        this.position = position
+        this.speed = 7
         this.animation = [
             {sX: 1, sY: 2, sH: 13},
             {sX: 1, sY: 19, sH: 12},

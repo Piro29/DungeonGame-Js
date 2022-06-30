@@ -54,6 +54,9 @@ snakeImage.src = "img/Snake2.png"
 const axolotImage = new Image()
 axolotImage.src = "img/Axolot.png"
 
+const bambooImage = new Image()
+bambooImage.src = "img/Bamboo.png"
+
 const townAudio = new Audio()
 townAudio.src = "sound/townSound.mp3"
 
@@ -82,6 +85,11 @@ const snakePosition = {
 const axolotPosition = {
     x: 600,
     y: 500,
+}
+
+const bambooPosition = {
+    x: 600,
+    y: 600,
 }
 
 //intial position of player
