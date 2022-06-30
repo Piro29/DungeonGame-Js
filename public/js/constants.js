@@ -205,4 +205,6 @@ gameOverWindow.style.top = `${y}px`
 gameOverWindow.style.backgroundColor = `brown`
 gameOverWindow.style.position = `absolute`
 
-const URL = "http://localhost:5000/highLevel"
+const URL = "https://fossil-observant-creek.glitch.me/highLevel"
+
+let hit = false

@@ -23,6 +23,7 @@ class Slime {
         this.speed = 8
         this.healthBarHeight = 8
         this.image = image
+        this.hit = false
 
     }
 
@@ -53,6 +54,8 @@ class Slime {
         ctx.strokeStyle = "#333"
         ctx.fillStyle = "red"
         let relativeW = (this.health / this.maxHealth)*this.maxWidth;
+
+       
         
         ctx.fillRect(this.position.x - 10, this.position.y - 15, relativeW, this.healthBarHeight)
         ctx.strokeRect(this.position.x - 10, this.position.y - 15, this.maxWidth, this.healthBarHeight)
@@ -61,11 +64,22 @@ class Slime {
     draw(ctx) {
         let ene = this.animation[this.frame]
         this.changedY = this.position.y
+        if(this.hit) {
+            ctx.globalAlpha = 0.2
+            console.log('testing');
+        }
         dungeonContext.drawImage(this.image, ene.sX, ene.sY, this.sW, ene.sH, this.position.x, this.changedY, this.w, this.h)
 
         this.drawHealth(ctx);
         this.update();
+        if(this.hit) {
+            ctx.globalAlpha = 1;
+            setTimeout(() => {
+                this.hit = false;
+            }, 100)
+        }
     }
+
 
 
 }

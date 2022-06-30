@@ -3,6 +3,7 @@ function keyPressed() {
     player.h = 45
     player.sW = 15
     player.sH = 18
+    hit = false
     if (direction === "up") player.p = player.playerUp[2]
     if (direction === "down") player.p = player.playerDown[2]
     if (direction === "right") player.p = player.playerRight[2]
@@ -209,10 +210,11 @@ function keyPressed() {
             if (isEnemyNear(player, enemy)) {
                 if (frames % 40 === 0) {
                     enemy.health -= stats.attack
+                    enemy.hit = true;
                 }
             }
         })
-        
+
         player.attack = true
         if (direction === "up") {
             player.p = player.attackUp[player.frame]
