@@ -8,18 +8,23 @@ function dungeon_function() {
 
     dungeonContext.font = "20px serif"
     dungeonContext.fillStyle = "white"
-    dungeonContext.fillText(`Highest Level : ${highestLevel}`, 500 , 60)
-    dungeonContext.fillText(`Level : ${level}`, 530 , 100)
+    dungeonContext.fillText(`Highest Level : ${highestLevel}`, 500, 60)
+    dungeonContext.fillText(`Level : ${level}`, 530, 100)
+    // enemies = enemies.filter(ene => !ene.dead)
 
-    enemies = enemies.filter(ene => !ene.dead)
-    if (enemies.length === 0) {
+    //check if all enemies are dead
+    if(enemies.reduce((prev, curr) => prev && curr.dead === true, true)){
         completeLevel.style.display = `grid`
     }
-    enemies.forEach(ene => {
-        ene.draw(dungeonContext)
+    
+    enemies.forEach((ene) => {
+        if(!ene.dead){
+            
+            ene.draw(dungeonContext)
+        }
     })
 
-    enemies.forEach((enemy)=>{
+    enemies.forEach((enemy) => {
         enemy.attacking = false
         if (!enemy.dead) {
             if (isEnemyNear(player, enemy)) {
@@ -31,7 +36,7 @@ function dungeon_function() {
             }
         }
     })
-    
+
 
 
     //draw player in dungeon
@@ -49,10 +54,11 @@ function dungeon_function() {
         gameOverWindow.style.display = "block"
         pause = true
 
-        
+
     }
 
-    enemies.forEach((enemy)=>{
+    enemies.forEach((enemy) => {
+
         if (!enemy.dead) {
 
             if (enemy.health <= 0) {
@@ -62,5 +68,5 @@ function dungeon_function() {
             }
         }
     })
-    
+
 }

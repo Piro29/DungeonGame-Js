@@ -57,6 +57,9 @@ axolotImage.src = "img/Axolot.png"
 const bambooImage = new Image()
 bambooImage.src = "img/Bamboo.png"
 
+const beastImage = new Image()
+beastImage.src = "img/Beast.png"
+
 const townAudio = new Audio()
 townAudio.src = "sound/townSound.mp3"
 
@@ -90,6 +93,11 @@ const axolotPosition = {
 const bambooPosition = {
     x: 600,
     y: 600,
+}
+
+const beastPosition = {
+    x: 600,
+    y: 700,
 }
 
 //intial position of player
@@ -213,6 +221,6 @@ gameOverWindow.style.top = `${y}px`
 gameOverWindow.style.backgroundColor = `brown`
 gameOverWindow.style.position = `absolute`
 
-const URL = "localhost:5000/highLevel"
+const URL = "http://localhost:5000/highLevel"
 
 let hit = false

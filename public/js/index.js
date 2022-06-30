@@ -6,10 +6,11 @@ let slimeEnemy = new Slime({ image: enemyImage, position: slimePosition })
 let snakeEnemy = new Snake({ image: snakeImage, position: snakePosition })
 let axolotEnemy = new Axolot({ image: axolotImage, position: axolotPosition })
 let bambooEnemy = new Bamboo({ image: bambooImage, position: bambooPosition })
+let beastEnemy = new Beast({ image: beastImage, position: beastPosition })
 
 //move map when player moves
 const movables = [
-    town, ...boundaries, foreground, ...battleZone, dungeon_map, ...wallBoundaries, slimeEnemy, snakeEnemy, ...upgradeZone, axolotEnemy, bambooEnemy
+    town, ...boundaries, foreground, ...battleZone, dungeon_map, ...wallBoundaries, slimeEnemy, snakeEnemy, ...upgradeZone, axolotEnemy, bambooEnemy, beastEnemy
 ]
 
 //create player
@@ -22,6 +23,7 @@ enemies.push(slimeEnemy)
 enemies.push(snakeEnemy)
 enemies.push(axolotEnemy)
 enemies.push(bambooEnemy)
+enemies.push(beastEnemy)
 
 
 

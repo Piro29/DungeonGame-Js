@@ -44,17 +44,13 @@ window.addEventListener("keyup", (e) => {
 })
 
 goHomeButton.addEventListener("click", () => {
-    enemies.push(slimeEnemy)
-    enemies.push(snakeEnemy)
-    enemies.push(axolotEnemy)
-    enemies.push(bambooEnemy)
     dungeon.started = false
     townCanvas.style.display = "inline"
     dungeonCanvas.style.display = "none"
     completeLevel.style.display = `none`
     level++
-    
-    enemies.forEach((enemy)=>{
+
+    enemies.forEach((enemy) => {
         enemy.dead = false
         enemy.health = enemy.maxHealth = 50 + (level * 4)
         enemy.attack_damage = 5 + (level * 4)
@@ -65,10 +61,6 @@ goHomeButton.addEventListener("click", () => {
 })
 
 nextLevelButton.addEventListener("click", () => {
-    enemies.push(slimeEnemy)
-    enemies.push(snakeEnemy)
-    enemies.push(axolotEnemy)
-    enemies.push(bambooEnemy)
 
     completeLevel.style.display = `none`
 
@@ -84,13 +76,22 @@ nextLevelButton.addEventListener("click", () => {
         x: 600,
         y: 500,
     }
+    bambooEnemy.position = {
+        x: 600,
+        y: 600,
+    }
 
-    enemies.forEach((enemy)=>{
+    beastEnemy.position = {
+        x: 600,
+        y: 700,
+    }
+
+    enemies.forEach((enemy) => {
         enemy.dead = false
         enemy.health = enemy.maxHealth = 50 + (level * 4)
         enemy.attack_damage = 5 + (level * 4)
     })
-    
+
     level++
 
     getHighestLevel()
@@ -135,7 +136,11 @@ restartButton.addEventListener("click", () => {
     gameOverWindow.style.display = "none"
     townCanvas.style.display = "inline"
     dungeonCanvas.style.display = "none"
-    
+
+    enemies.forEach((enemy) => {
+        enemy.health = enemy.maxHealth
+    })
+
     getHighestLevel()
     setHighestLevel()
 })
