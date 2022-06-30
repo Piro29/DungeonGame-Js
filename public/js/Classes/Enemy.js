@@ -87,3 +87,21 @@ class Snake extends Slime {
 
 
 }
+
+class Axolot extends Slime {
+    constructor({position, image}) {
+        super({position, image})
+        this.sW = 14
+        this.position = position
+        this.speed = 3
+        this.animation = [
+            {sX: 1, sY: 2, sH: 13},
+            {sX: 1, sY: 19, sH: 12},
+            {sX: 1, sY: 34, sH: 13},
+            {sX: 1, sY: 51, sH: 12},
+        ]
+
+    }
+
+
+}

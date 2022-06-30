@@ -51,6 +51,15 @@ enemyImage.src = "img/Slime2.png"
 const snakeImage = new Image()
 snakeImage.src = "img/Snake2.png"
 
+const axolotImage = new Image()
+axolotImage.src = "img/Axolot.png"
+
+const townAudio = new Audio()
+townAudio.src = "sound/townSound.mp3"
+
+const swordAudio = new Audio()
+swordAudio.src = "sound/sword.wav"
+
 //upgrade window properties
 const upgradeWindowWidth = townCanvas.width / 2
 const upgradeWindowHeight = townCanvas.height / 2
@@ -58,28 +67,36 @@ const x = upgradeWindowWidth - upgradeWindowWidth / 2
 const y = upgradeWindowHeight - upgradeWindowHeight / 2
 
 
+//intial position of slime
 const slimePosition = {
     x: 600,
     y: 300,
 }
 
-
+//intial position of snake
 const snakePosition = {
     x: 600,
     y: 400,
 }
 
+const axolotPosition = {
+    x: 600,
+    y: 500,
+}
+
+//intial position of player
 let direction = "down"
 
 let pause = false
-let level = 0
+let highestLevel = 0
+let level = 1
 
+//offset of the town map and dungeon map
 const offset = {
     x: -725,
     y: -650
 }
 
-const numberOfEnemy = 5
 
 const keys = {
     w: {
@@ -99,23 +116,32 @@ const keys = {
     }
 }
 
+//inside dungeon or not
 const dungeon = {
     started: false
 }
+
+//upgrade shop displayed or not
 const upgrade = {
     started: false
 }
 
+
 let enemies = []
 
+//for town boundary
 const boundaries = []
 
+//for the dungeon wall collision
 const wallBoundaries = []
 
+//for the dungeon entrance
 const battleZone = []
 
+//for the upgrade shop
 const upgradeZone = []
 
+//for town map
 const town = new Sprite({
     position: {
         x: offset.x,
@@ -125,6 +151,7 @@ const town = new Sprite({
     context: townContext
 })
 
+//for dungeon map
 const dungeon_map = new Sprite({
     position: {
         x: offset.x,
@@ -133,6 +160,8 @@ const dungeon_map = new Sprite({
     image: dungeonImage,
     context: dungeonContext
 })
+
+
 
 
 const foreground = {
@@ -145,3 +174,35 @@ const foreground = {
     }
 
 }
+
+//style the windows
+upgradeWindow.style.width = `${upgradeWindowWidth}px`
+upgradeWindow.style.height = `${upgradeWindowHeight}px`
+upgradeWindow.style.left = `${x}px`
+upgradeWindow.style.top = `${y}px`
+upgradeWindow.style.backgroundColor = `brown`
+upgradeWindow.style.position = `absolute`
+
+startWindow.style.width = `${upgradeWindowWidth}px`
+startWindow.style.height = `${upgradeWindowHeight}px`
+startWindow.style.left = `${x}px`
+startWindow.style.top = `${y}px`
+startWindow.style.backgroundColor = `brown`
+startWindow.style.position = `absolute`
+
+completeLevel.style.width = `${upgradeWindowWidth}px`
+completeLevel.style.height = `${upgradeWindowHeight}px`
+completeLevel.style.left = `${x}px`
+completeLevel.style.top = `${y}px`
+completeLevel.style.backgroundColor = `brown`
+completeLevel.style.position = `absolute`
+startWindow.style.position = `absolute`
+
+gameOverWindow.style.width = `${upgradeWindowWidth}px`
+gameOverWindow.style.height = `${upgradeWindowHeight}px`
+gameOverWindow.style.left = `${x}px`
+gameOverWindow.style.top = `${y}px`
+gameOverWindow.style.backgroundColor = `brown`
+gameOverWindow.style.position = `absolute`
+
+const URL = "http://localhost:5000/highLevel"

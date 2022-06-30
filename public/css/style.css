@@ -22,3 +22,9 @@ button:hover{
 .gameOver{
     display: none;
 }
+
+h1{
+    font-size: 20px;
+    text-align: center;
+    margin: 50px 0  ;
+}

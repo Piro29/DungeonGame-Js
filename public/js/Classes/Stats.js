@@ -17,7 +17,7 @@ class Stats {
         context.fillRect(this.x, this.y, this.health, this.height)
         context.strokeRect(this.x, this.y, this.maxWidth, this.height)
         context.font = "20px serif"
-        context.fillStyle = "black"
+        context.fillStyle = "white"
         context.fillText(`Points : ${this.points}`, this.x, this.y + 50)
         context.fillText(`Damage : ${this.attack}`, this.x, this.y + 80)
     }
