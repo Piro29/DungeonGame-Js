@@ -50,7 +50,7 @@ function draw() {
         player.draw(townContext)
         foreground.draw()
         stats.draw(townContext)
-        if (stats.health !== stats.maxWidth) stats.health++
+        if (stats.health < stats.maxWidth) stats.health++
 
     }
 }

@@ -114,10 +114,15 @@ upgradeDamageButton.addEventListener("click", () => {
 
 })
 upgradeHealthButton.addEventListener("click", () => {
+    status.style.color = "white"
+    status.style.textAlign = "center"
     if (stats.points < 5) status.innerHTML = "Not Enought Points"
     else {
-        stats.maxWidth += 50
+        if (stats.maxWidth < 200) {
+            stats.maxWidth += 50
+        }
         stats.health += 50
+        stats.maxHealth += 50
         stats.points -= 5
         status.innerHTML = "Health Upgraded"
     }
